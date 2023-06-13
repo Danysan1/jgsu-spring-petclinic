@@ -48,6 +48,12 @@ pipeline {
                 success {
                     archiveArtifacts 'target/*.jar'
                 }
+                regression {
+                    emailext attachLog: true, body: 'Build URL: ${BUILD_URL}', recipientProviders: [previous()], subject: 'A regression was introduced in job \'${JOB_NAME}\' in build ${BUILD_NUMBER}'
+                }
+                fixed {
+                    emailext attachLog: true, body: 'Build URL: ${BUILD_URL}', recipientProviders: [previous()], subject: 'Job \'${JOB_NAME}\' was fixed in build ${BUILD_NUMBER}'
+                }
             }
         }
     }
